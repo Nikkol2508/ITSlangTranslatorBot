@@ -1,5 +1,6 @@
 package com.nikkol2508.ITSlang;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,8 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Optional;
+import java.util.List;
 
+@Slf4j
 @Service
 public class BotService extends TelegramLongPollingBot {
 
@@ -46,20 +48,34 @@ public class BotService extends TelegramLongPollingBot {
                 outMessage.setChatId(inMessage.getChatId().toString());
                 if (inMessage.getText().equals("/start")) {
                     outMessage.setText("Введите слово из сферы IT");
+                    execute(outMessage);
                 }
                 else {
-                    Optional<SlangTranslator> slangTranslator = slangRepository
-                            .findBySearchQueryEnContainingOrSearchQueryRuContaining(inMessage.getText().toLowerCase(),
-                                    inMessage.getText().toLowerCase());
-                    String description = slangTranslator.isPresent()
-                            ? slangTranslator.get().getDescription()
-                            : "Такого слова пока нет в нашей базе, но скоро мы его добавим. Попробуйте позже.";
-                    outMessage.setText(description);
+                    getDescriptions(inMessage, outMessage);
                 }
-                execute(outMessage);
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void getDescriptions(Message inMessage, SendMessage outMessage) throws TelegramApiException {
+        List<SlangTranslator> slangTranslatorList = slangRepository
+                .findTop5BySearchQueryEnContainingOrSearchQueryRuContaining(inMessage.getText().toLowerCase(),
+                        inMessage.getText().toLowerCase());
+        if (slangTranslatorList.isEmpty()) {
+            outMessage.setText("Такого слова пока нет в нашей базе, но скоро мы его добавим. Попробуйте позже.");
+            log.info(inMessage.getText());
+            execute(outMessage);
+        } else {
+            for (SlangTranslator slangTranslator : slangTranslatorList) {
+                outMessage.setText(slangTranslator.getDescription());
+                execute(outMessage);
+            }
+            if (slangTranslatorList.size() == 5) {
+                outMessage.setText("Найдено много совпадений! Уточните запрос.");
+                execute(outMessage);
+            }
         }
     }
 }
