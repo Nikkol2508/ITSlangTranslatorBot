@@ -1,0 +1,45 @@
+body {
+    background-color: #c5d5db;
+    display: flex;
+}
+
+#not_found_list {
+    background-color: #b1bfc7;
+    height: auto;
+    width: 400px;
+    padding: 20px;
+}
+
+.query_list {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.list_block_1 {
+    display: block;
+    width: 300px;
+    margin: 10px;
+}
+
+.list_block_2 {
+    display: block;
+    width: 30px;
+    margin: 10px;
+}
+
+.form {
+    background-color: #b1bfc7;
+    padding: 20px;
+    margin-left: 5px;
+}
+
+label {
+    display: block;
+    margin: 10px 0px 3px 0px;
+}
+
+.button {
+    border-radius: 8px;
+    font-size: 1.4em;
+    margin-top: 10px;
+}

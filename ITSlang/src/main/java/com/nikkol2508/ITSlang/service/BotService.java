@@ -68,7 +68,18 @@ public class BotService extends TelegramLongPollingBot {
             }
         } catch (TelegramApiException | IOException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            SendMessage outMessage = new SendMessage();
+            Message inMessage = update.getMessage();
+            outMessage.setChatId(inMessage.getChatId().toString());
+            outMessage.setText("Что-то пошло не так. Попробуйте ещё раз, или повторите попытку позже.");
+            try {
+                execute(outMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private void getDescriptions(Message inMessage, SendMessage outMessage) throws TelegramApiException, IOException {
