@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang;
+package com.nikkol2508.it_slang;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

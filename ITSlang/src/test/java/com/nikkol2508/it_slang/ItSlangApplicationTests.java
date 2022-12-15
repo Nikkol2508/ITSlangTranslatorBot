@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang;
+package com.nikkol2508.it_slang;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

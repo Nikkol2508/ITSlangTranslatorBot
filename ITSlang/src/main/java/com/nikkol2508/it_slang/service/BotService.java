@@ -1,9 +1,9 @@
-package com.nikkol2508.ITSlang.service;
+package com.nikkol2508.it_slang.service;
 
-import com.nikkol2508.ITSlang.repository.NotFoundRepository;
-import com.nikkol2508.ITSlang.repository.SlangRepository;
-import com.nikkol2508.ITSlang.repository.entity.NotFound;
-import com.nikkol2508.ITSlang.repository.entity.SlangTranslator;
+import com.nikkol2508.it_slang.repository.NotFoundRepository;
+import com.nikkol2508.it_slang.repository.SlangRepository;
+import com.nikkol2508.it_slang.repository.entity.NotFound;
+import com.nikkol2508.it_slang.repository.entity.SlangTranslator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,7 +90,7 @@ public class BotService extends TelegramLongPollingBot {
             outMessage.setText("Такого слова пока нет в нашей базе, но скоро мы его добавим. Попробуйте позже.");
             log.info(inMessage.getText());
             NotFound notFoundQuery = new NotFound();
-            notFoundQuery.setNotFoundQuery(inMessage.getText());
+            notFoundQuery.setNotFoundQuery(inMessage.getText().toLowerCase());
             notFoundRepository.save(notFoundQuery);
             execute(outMessage);
         } else {

@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang.dto;
+package com.nikkol2508.it_slang.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,4 +12,5 @@ public class FormData {
     private String queryRu;
     private String queryEn;
     private String description;
+    private String query;
 }

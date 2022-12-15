@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang.repository;
+package com.nikkol2508.it_slang.repository;
 
 public interface NotFoundCount {
 

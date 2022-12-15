@@ -1,6 +1,6 @@
-package com.nikkol2508.ITSlang.repository;
+package com.nikkol2508.it_slang.repository;
 
-import com.nikkol2508.ITSlang.repository.entity.SlangTranslator;
+import com.nikkol2508.it_slang.repository.entity.SlangTranslator;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

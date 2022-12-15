@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang.dto;
+package com.nikkol2508.it_slang.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -24,13 +24,5 @@ public class NotFoundResult {
 
     public void setCountQuery(int countQuery) {
         this.countQuery = countQuery;
-    }
-
-    @Override
-    public String toString() {
-        return "NotFoundResult{" +
-                "notFoundQuery='" + notFoundQuery + '\'' +
-                ", countQuery=" + countQuery +
-                '}';
     }
 }

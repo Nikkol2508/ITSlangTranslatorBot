@@ -2,48 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf">
 <head>
     <meta charset="UTF-8">
-    <title>dictionary management</title>
+    <title>IT slang dictionary</title>
     <link rel="stylesheet" href="/static/main.css"/>
 </head>
 <body>
-<div id="not_found_list">
-    <h2>Список не найденных запросов (<span th:text="${totalCount}">0</span>)</h2>
-    <form action="/queries" method="post">
-        <div>
-            <input class="button" type="submit" value="Удалить все не найденные запросы"/>
-        </div>
-    </form>
-    <div id="task-list">
-        <div class="query_list" th:each="queryres : ${queryList}">
-            <div class="list_block_1">
-                <p th:text="${queryres.notFoundQuery}"> vagrant </p>
-            </div>
-            <div class="list_block_2">
-                <p th:text="${queryres.countQuery}"> 5 </p>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="form">
-    <h2>Форма добавления новых слов</h2>
+    <h2>Введите слово из области IT</h2>
     <form th:action="@{/descriptions}" th:object="${formData}" method="post">
         <div>
-            <label for="query_ru">Запрос на русском</label>
-            <input name="query_ru" type="text" th:field="*{queryRu}" id="query_ru">
-        </div>
-        <div>
-            <label for="query_en">Запрос на английском</label>
-            <input name="query_en" id="query_en" value="" th:field="*{queryEn}">
-        </div>
-        <div>
-            <label for="description">Описание термина</label>
-            <textarea name="description" id="description" rows="10" cols="40" required
-                      th:field="*{description}"></textarea>
+            <label for="query">Запрос</label>
+            <input name="query" id="query" value="" th:field="*{query}" required>
         </div>
         <div>
             <input class="button" type="submit" value="Отправить"/>
         </div>
     </form>
+</div>
+<div id="task-list">
+    <div class="query_list" th:each="descriptions : ${descriptionList}">
+        <div class="list_block_1">
+            <p th:text="${descriptions}"> ??? </p>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.nikkol2508.ITSlang.repository.entity;
+package com.nikkol2508.it_slang.repository.entity;
 
 import lombok.Data;
 

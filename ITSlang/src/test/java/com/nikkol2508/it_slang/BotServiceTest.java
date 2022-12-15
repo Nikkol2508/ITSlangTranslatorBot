@@ -1,8 +1,6 @@
-package com.nikkol2508.ITSlang;
+package com.nikkol2508.it_slang;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BotServiceTest {
 
