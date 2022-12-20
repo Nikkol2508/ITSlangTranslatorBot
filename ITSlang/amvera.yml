@@ -4,9 +4,6 @@ meta:
     name: maven
     version: 11
 
-build:
-  args: spring-boot:repackage
-
 run:
   jarName: target/ITSlang-0.0.1-SNAPSHOT.jar
   containerPort: 8080
