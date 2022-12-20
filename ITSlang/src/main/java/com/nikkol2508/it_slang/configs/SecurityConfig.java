@@ -20,8 +20,8 @@ public class  SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("is_admin")
-                .password("{bcrypt}$2y$10$8XA6xuUh.aZ2V4aMF4mfQOUcrrIyLwQbXENiRjEuuoegLFAnJ9OVu")
+                .withUser("isb_admin")
+                .password("{bcrypt}$2y$10$20M4LKDWT9ynQE3sSIpl7u82GI0X6JV85H0Un.HOITwzDsksRjRUW")
                 .roles("ADMIN");
     }
 }
