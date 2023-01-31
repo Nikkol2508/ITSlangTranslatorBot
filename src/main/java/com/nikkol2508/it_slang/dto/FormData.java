@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 public class FormData {
 
-    private String queryRu;
-    private String queryEn;
     private String description;
     private String query;
 }

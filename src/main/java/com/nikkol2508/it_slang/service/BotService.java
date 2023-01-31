@@ -4,6 +4,7 @@ import com.nikkol2508.it_slang.repository.NotFoundRepository;
 import com.nikkol2508.it_slang.repository.SlangRepository;
 import com.nikkol2508.it_slang.repository.entity.NotFound;
 import com.nikkol2508.it_slang.repository.entity.SlangTranslator;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,18 +21,21 @@ import java.util.List;
 @Service
 public class BotService extends TelegramLongPollingBot {
 
-    private final String  botUsername;
+    private final String botUsername;
     private final String botToken;
+    private final int MAX_DISPLAYED_VALUES;
     private final SlangRepository slangRepository;
     private final NotFoundRepository notFoundRepository;
 
     public BotService(@Value("${telegram-bot.name}") String botUsername,
                       @Value("${telegram-bot.token}") String botToken,
+                      @Value("${telegram-bot.max_displayed_values}") int MAX_DISPLAYED_VALUES,
                       SlangRepository slangRepository, NotFoundRepository notFoundRepository) {
         this.botUsername = botUsername;
         this.botToken = botToken;
         this.slangRepository = slangRepository;
         this.notFoundRepository = notFoundRepository;
+        this.MAX_DISPLAYED_VALUES = MAX_DISPLAYED_VALUES;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class BotService extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return botToken ;
+        return botToken;
     }
 
     @Override
@@ -49,58 +53,53 @@ public class BotService extends TelegramLongPollingBot {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 Message inMessage = update.getMessage();
-                SendMessage outMessage = new SendMessage();
-                outMessage.setChatId(inMessage.getChatId().toString());
                 if (inMessage.getText().equals("/start")) {
-                    outMessage.setText("Введите слово из сферы IT");
-                    execute(outMessage);
-                }
-                else if (inMessage.getText().equals("/nf")) {
+                    sendMessage(inMessage.getChatId(),
+                            "Здравствуйте " + inMessage.getChat().getFirstName() + " Введите слово из сферы IT");
+                } else if (inMessage.getText().equals("/nf")) {
                     List<NotFound> notFoundList = (List<NotFound>) notFoundRepository.findAll();
                     for (NotFound notFound : notFoundList) {
-                        outMessage.setText(notFound.getNotFoundQuery());
-                        execute(outMessage);
+                        sendMessage(inMessage.getChatId(), notFound.getNotFoundQuery());
                     }
-                }
-                else {
-                    getDescriptions(inMessage, outMessage);
+                } else {
+                    getDescriptions(inMessage);
                 }
             }
-        } catch (TelegramApiException | IOException e) {
-            e.printStackTrace();
         } catch (Exception ex) {
-            SendMessage outMessage = new SendMessage();
-            Message inMessage = update.getMessage();
-            outMessage.setChatId(inMessage.getChatId().toString());
-            outMessage.setText("Что-то пошло не так. Попробуйте ещё раз, или повторите попытку позже.");
-            try {
-                execute(outMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            sendMessage(update.getMessage().getChatId(),
+                    "Что-то пошло не так. Попробуйте ещё раз, или повторите попытку позже.");
+            ex.printStackTrace();
         }
-
     }
 
-    private void getDescriptions(Message inMessage, SendMessage outMessage) throws TelegramApiException, IOException {
+    public void sendMessage(Long chatId, String text) {
+        SendMessage outMessage = new SendMessage();
+        outMessage.setChatId(chatId);
+        outMessage.setText(text);
+        try {
+            execute(outMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDescriptions(Message inMessage) {
+        String textMessage = inMessage.getText().toLowerCase();
         List<SlangTranslator> slangTranslatorList = slangRepository
-                .findTop5BySearchQueryEnContainingOrSearchQueryRuContaining(inMessage.getText().toLowerCase(),
-                        inMessage.getText().toLowerCase());
+                .findTop5BySearchQueryContainingIgnoreCase(textMessage);
         if (slangTranslatorList.isEmpty()) {
-            outMessage.setText("Такого слова пока нет в нашей базе, но скоро мы его добавим. Попробуйте позже.");
             log.info(inMessage.getText());
             NotFound notFoundQuery = new NotFound();
-            notFoundQuery.setNotFoundQuery(inMessage.getText().toLowerCase());
+            notFoundQuery.setNotFoundQuery(textMessage);
             notFoundRepository.save(notFoundQuery);
-            execute(outMessage);
+            sendMessage(inMessage.getChatId(),
+                    "Такого слова пока нет в нашей базе, но скоро мы его добавим. Попробуйте позже.");
         } else {
             for (SlangTranslator slangTranslator : slangTranslatorList) {
-                outMessage.setText(slangTranslator.getDescription());
-                execute(outMessage);
+                sendMessage(inMessage.getChatId(), slangTranslator.getDescription());
             }
-            if (slangTranslatorList.size() == 5) {
-                outMessage.setText("Найдено много совпадений! Уточните запрос.");
-                execute(outMessage);
+            if (slangTranslatorList.size() == MAX_DISPLAYED_VALUES) {
+                sendMessage(inMessage.getChatId(), "Найдено много совпадений! Уточните запрос.");
             }
         }
     }

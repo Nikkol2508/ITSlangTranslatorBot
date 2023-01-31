@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface SlangRepository extends CrudRepository<SlangTranslator, Integer> {
 
-    List<SlangTranslator> findTop5BySearchQueryEnContainingOrSearchQueryRuContaining(String searchQueryEn, String searchQueryRu);
+    List<SlangTranslator> findTop5BySearchQueryContainingIgnoreCase(String searchQuery);
 }
+

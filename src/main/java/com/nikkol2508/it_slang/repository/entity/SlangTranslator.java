@@ -1,11 +1,14 @@
 package com.nikkol2508.it_slang.repository.entity;
 
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "slang_translator")
 public class SlangTranslator {
@@ -14,11 +17,8 @@ public class SlangTranslator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "search_query_ru")
-    private String searchQueryRu;
-
-    @Column(name = "search_query_en")
-    private String searchQueryEn;
+    @Column(name = "search_query")
+    private String searchQuery;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;

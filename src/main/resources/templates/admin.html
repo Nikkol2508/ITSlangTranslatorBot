@@ -28,12 +28,8 @@
     <h2>Форма добавления новых слов</h2>
     <form th:action="@{/admin/descriptions}" th:object="${formData}" method="post">
         <div>
-            <label for="query_ru">Запрос на русском</label>
-            <input name="query_ru" type="text" th:field="*{queryRu}" id="query_ru">
-        </div>
-        <div>
-            <label for="query_en">Запрос на английском</label>
-            <input name="query_en" id="query_en" value="" th:field="*{queryEn}">
+            <label for="query">Термин из сферы IT</label>
+            <input name="query" type="text" th:field="*{query}" id="query">
         </div>
         <div>
             <label for="description">Описание термина</label>

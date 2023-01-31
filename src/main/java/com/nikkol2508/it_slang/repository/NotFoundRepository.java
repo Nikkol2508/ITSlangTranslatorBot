@@ -13,5 +13,5 @@ public interface NotFoundRepository extends CrudRepository<NotFound, Integer> {
             "ORDER BY countQuery DESC", nativeQuery = true)
     List<NotFoundCount> getNotFound();
 
-    long deleteNotFoundsByNotFoundQuery(String notFoundQuery);
+    long deleteNotFoundsByNotFoundQueryIgnoreCase(String notFoundQuery);
 }

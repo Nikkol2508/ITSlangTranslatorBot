@@ -1,10 +1,13 @@
 package com.nikkol2508.it_slang.repository.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "not_found")
 public class NotFound {
