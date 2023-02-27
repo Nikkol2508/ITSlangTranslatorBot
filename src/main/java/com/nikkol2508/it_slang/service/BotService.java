@@ -23,19 +23,19 @@ public class BotService extends TelegramLongPollingBot {
 
     private final String botUsername;
     private final String botToken;
-    private final int MAX_DISPLAYED_VALUES;
     private final SlangRepository slangRepository;
     private final NotFoundRepository notFoundRepository;
 
+    @Value("${telegram-bot.max_displayed_values}")
+    private int MAX_DISPLAYED_VALUES;
+
     public BotService(@Value("${telegram-bot.name}") String botUsername,
                       @Value("${telegram-bot.token}") String botToken,
-                      @Value("${telegram-bot.max_displayed_values}") int MAX_DISPLAYED_VALUES,
                       SlangRepository slangRepository, NotFoundRepository notFoundRepository) {
         this.botUsername = botUsername;
         this.botToken = botToken;
         this.slangRepository = slangRepository;
         this.notFoundRepository = notFoundRepository;
-        this.MAX_DISPLAYED_VALUES = MAX_DISPLAYED_VALUES;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BotService extends TelegramLongPollingBot {
                 Message inMessage = update.getMessage();
                 if (inMessage.getText().equals("/start")) {
                     sendMessage(inMessage.getChatId(),
-                            "Здравствуйте " + inMessage.getChat().getFirstName() + " Введите слово из сферы IT");
+                            "Здравствуйте " + inMessage.getChat().getFirstName() + "! Введите слово из сферы IT");
                 } else if (inMessage.getText().equals("/nf")) {
                     List<NotFound> notFoundList = (List<NotFound>) notFoundRepository.findAll();
                     for (NotFound notFound : notFoundList) {
