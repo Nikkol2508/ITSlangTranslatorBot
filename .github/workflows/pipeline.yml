@@ -33,4 +33,4 @@ jobs:
           script: |
             docker stop ${{ secrets.DOCKER_NAME }}
             docker rm ${{ secrets.DOCKER_NAME }}
-            docker run --name=${{ secrets.DOCKER_NAME }} -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --add-host=host.docker.internal:host-gateway -d $LOGIN/$NAME:${{ github.sha }}
+            docker run --name ${{ secrets.DOCKER_NAME }} -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --add-host=host.docker.internal:host-gateway -d $LOGIN/$NAME:${{ github.sha }}
